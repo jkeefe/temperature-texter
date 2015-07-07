@@ -16,7 +16,7 @@
 // Edited by John Keefe for DHT22 only
 // June 2015
 // Get the full library, including the dht.h file at the URL above
-// More info at http://johnkeefe.net/make-every-week-temperature-texter
+// More info at http://johnkeefe.net/make-every-week-temperature-taker
 
 #include <dht.h>
 
