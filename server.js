@@ -8,6 +8,10 @@ Based on code originally written by Noah Veltman, veltman.com
 Also includes Flickr API module example code from 
 https://github.com/Pomax/node-flickrapi
 
+I leaving this running on my server using forever.js
+Details on that here: https://github.com/foreverjs/forever
+Once installed, the command I run is: sudo forever start server.js
+
 John Keefe
 http://johnkeefe.net
 March 2015
