@@ -109,6 +109,60 @@ app.post(/^\/?incoming-temperature-texts/i, twilio.webhook(twilioKeys.TWILIO_AUT
   });  
 });
 
+app.post(/^\/?incoming-riffle-texts/i, twilio.webhook(twilioKeys.TWILIO_AUTH_TOKEN), function(req, response){
+    
+  // Receive Text //
+    
+	// is there a body of information
+	if (!req.body) {
+		req.send("Posting error");
+		return true;
+	}
+  
+  var text_message = req.body.Body;
+  
+  // strip out spaces (the arduino code pads numbers with spaces)
+  text_message = text_message.replace(/ /g,'');
+  
+  // text messages sent in the format:
+  // device_id,conductivity,temp,battery
+  // ie: john's_arduino,78.5,51.2,91
+  
+  // make an array out of the comma-separated values
+  var values = text_message.split(',');
+  
+  // Post to data.sparkfun.com page //
+  
+  // Format for "posting" is:  http://data.sparkfun.com/input/[publicKey]?private_key=[privateKey]&battery=[value]&device_id=[value]&humidity=[value]&temperature=[value]
+  // Public URL is: https://data.sparkfun.com/streams/yAY9jDmE7VSZ96LRGYJd
+  
+  // build the url to hit sparfun with
+  var data_url = "http://data.sparkfun.com/input/7JLDOZZvLJFjm3lyoAL4?private_key=" + sparkfunTemptexterKeys.STREAMLAB_PRIVATE_KEY +
+  "&device_id=" + values[0] + 
+  "&conductivity=" + values[1] + 
+  "&temperature=" + values[2] + 
+  "&battery=" + values[3];
+  
+  // compose the request
+  var options = {
+    url: data_url,
+    method: 'GET'
+  };
+  
+  // start the request/get to data.sparkfun.com
+  request(options, function(error, response, body){
+    
+    if (error || response.statusCode != 200) {
+      console.log("Error hitting Sparkfun site: ",error);
+    
+    } else {
+      
+      // everything went okay
+      
+    }
+  });  
+});
+
 app.use(express.static(__dirname));
  
 app.listen(80);
